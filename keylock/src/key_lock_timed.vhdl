@@ -1,6 +1,7 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use work.key_lock_constants.all;
 
 
 entity key_lock_timed is
@@ -8,7 +9,7 @@ entity key_lock_timed is
         CLKxCI : in std_logic;
         RSTxRI : in std_logic;
         KeyValidxSI : in std_logic;
-        KeyxDI : in unsigned(2-1 downto 0);
+        KeyxDI : in unsigned(0 to 2-1);
         RLEDxSO : out std_logic;
         GLEDxSO : out std_logic
     );
@@ -19,10 +20,6 @@ architecture rtl of key_lock_timed is
 
     type LockStateEnum is (LOCK_OPEN, LOCK_CLOSED);
     type CombinationCheckStateEnum is (COMBINATION_WRONG, COMBINATION_OK);
-    type CombinationArray is array (natural range <>) of unsigned(2-1 downto 0);    
-
-    constant OPEN_LOCK_TIMEOUT : unsigned(31-1 downto 0) := to_unsigned(1000000000, 31);
-    constant CORRECT_COMBINATION : CombinationArray(2 downto 0) := (to_unsigned(0, 2), to_unsigned(2, 2), to_unsigned(1, 2)); -- u, r, l
 
     signal KeyValidxSP : std_logic;
     signal KeyValidRisesxS : std_logic;
@@ -92,8 +89,8 @@ begin
     begin
 
         CombinationStatexSN <= CombinationStatexSP;
-        
-        if KeyValidRisesxS = '1' and CombinationStatexSP = COMBINATION_OK and KeyxDI /= CORRECT_COMBINATION(to_integer(DigitIndexxP)) then
+
+        if KeyValidRisesxS = '1' and CombinationStatexSP = COMBINATION_OK and KeyxDI/= CORRECT_COMBINATION(to_integer(DigitIndexxP)) then
             CombinationStatexSN <= COMBINATION_WRONG;
         end if;
 
