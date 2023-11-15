@@ -92,32 +92,9 @@ begin
     end process;
 
     -- set outputs
-    process (all) is
-    begin
-        
-        GLED0xSO <= '0';
-        RLED0xSO <= '0';
-        GLED1xSO <= '0';
-        RLED1xSO <= '0';
-
-        if Key0xSI = '1' and PriorityStatexP = SUBSYSTEM_0 then
-            GLED0xSO <= '1';
-        end if;
-        if Key0xSI = '1' and PriorityStatexP = SUBSYSTEM_1 then
-            RLED0xSO <= '1';
-        end if;
-        if Key1xSI = '1' and PriorityStatexP = SUBSYSTEM_1 then
-            GLED1xSO <= '1';
-        end if;
-        if Key1xSI = '1' and PriorityStatexP = SUBSYSTEM_0 then
-            RLED1xSO <= '1';
-        end if;
-        
---        GLED0xSO <= Key0xSI = '1' and PriorityStatexP = SUBSYSTEM_0;
---        RLED0xSO <= Key0xSI = '1' and PriorityStatexP = SUBSYSTEM_1;
---        GLED1xSO <= Key1xSI = '1' and PriorityStatexP = SUBSYSTEM_1;
---        RLED1xSO <= Key1xSI = '1' and PriorityStatexP = SUBSYSTEM_0;
-        
-    end process;
+    GLED0xSO <= '1' when Key0xSI = '1' and PriorityStatexP = SUBSYSTEM_0 else '0';
+    RLED0xSO <= '1' when Key0xSI = '1' and PriorityStatexP = SUBSYSTEM_1 else '0';
+    GLED1xSO <= '1' when Key1xSI = '1' and PriorityStatexP = SUBSYSTEM_1 else '0';
+    RLED1xSO <= '1' when Key1xSI = '1' and PriorityStatexP = SUBSYSTEM_0 else '0';
 
 end rtl;
